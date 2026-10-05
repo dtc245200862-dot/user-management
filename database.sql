@@ -55,3 +55,13 @@ INSERT IGNORE INTO permission(id, name) VALUES (2, 'edit');
 INSERT IGNORE INTO permission(id, name) VALUES (3, 'delete');
 INSERT IGNORE INTO permission(id, name) VALUES (4, 'view');
 
+-- 6. Tạo bảng Employee
+CREATE TABLE IF NOT EXISTS Employee (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(120) NOT NULL,
+    salary DECIMAL(15, 2) NOT NULL,
+    created_Date TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+

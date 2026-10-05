@@ -72,12 +72,27 @@ public class UserServlet extends HttpServlet {
                 case "sort":
                     sortUser(request, response);
                     break;
+                case "test-without-tran":
+                    testWithoutTran(request, response);
+                    break;
                 default:
                     listUser(request, response);
                     break;
             }
         } catch (Exception ex) {
             throw new ServletException(ex);
+        }
+    }
+
+    private void testWithoutTran(HttpServletRequest request, HttpServletResponse response) {
+        userDAO.insertUpdateWithoutTransaction();
+        System.out.println("Đã chạy xong hàm testWithoutTran. Hãy kiểm tra database!");
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.getWriter().println("<h3>Đã chạy xong hàm testWithoutTran. Hãy kiểm tra console và database!</h3>");
+            response.getWriter().println("<p><a href='" + request.getContextPath() + "/users'>Quay lại danh sách users</a></p>");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
