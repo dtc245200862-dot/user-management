@@ -113,7 +113,7 @@ public class UserServlet extends HttpServlet {
 
     private void listUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<User> listUser = userDAO.selectAllUsers();
+        List<User> listUser = userDAO.selectAllUsersStore();
         request.setAttribute("listUser", listUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
         dispatcher.forward(request, response);
@@ -174,14 +174,14 @@ public class UserServlet extends HttpServlet {
         String country = request.getParameter("country");
 
         User user = new User(id, name, email, country);
-        userDAO.updateUser(user);
+        userDAO.updateUserStore(user);
         response.sendRedirect("users");
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         int id = Integer.parseInt(request.getParameter("id"));
-        userDAO.deleteUser(id);
+        userDAO.deleteUserStore(id);
         response.sendRedirect("users");
     }
 

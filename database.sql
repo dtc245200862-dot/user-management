@@ -64,4 +64,43 @@ CREATE TABLE IF NOT EXISTS Employee (
     PRIMARY KEY (id)
 );
 
+-- 7. Stored Procedure lấy tất cả người dùng (get_all_users)
+DELIMITER $$
+DROP PROCEDURE IF EXISTS get_all_users$$
+CREATE PROCEDURE get_all_users()
+BEGIN
+    SELECT users.id, users.name, users.email, users.country
+    FROM users;
+END$$
+DELIMITER ;
+
+-- 8. Stored Procedure cập nhật người dùng (update_user)
+DELIMITER $$
+DROP PROCEDURE IF EXISTS update_user$$
+CREATE PROCEDURE update_user(
+    IN user_id INT,
+    IN user_name VARCHAR(120),
+    IN user_email VARCHAR(220),
+    IN user_country VARCHAR(120)
+)
+BEGIN
+    UPDATE users 
+    SET name = user_name, email = user_email, country = user_country
+    WHERE id = user_id;
+END$$
+DELIMITER ;
+
+-- 9. Stored Procedure xoá người dùng (delete_user)
+DELIMITER $$
+DROP PROCEDURE IF EXISTS delete_user$$
+CREATE PROCEDURE delete_user(
+    IN user_id INT
+)
+BEGIN
+    DELETE FROM users 
+    WHERE id = user_id;
+END$$
+DELIMITER ;
+
+
 
