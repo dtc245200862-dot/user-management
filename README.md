@@ -36,6 +36,8 @@ user-management/
 - Thêm mới User (`/users?action=create`)
 - Sửa thông tin User (`/users?action=edit&id=...`)
 - Xóa User (`/users?action=delete&id=...`)
+- Tìm kiếm User theo quốc gia (`/users?action=search&country=...`)
+- Sắp xếp User theo tên (`/users?action=sort`)
 
 ## Cơ sở dữ liệu MySQL
 ```sql

@@ -20,6 +20,8 @@ public class UserDAO implements IUserDAO {
     private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
     private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE id = ?;";
     private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?, email = ?, country = ? WHERE id = ?;";
+    private static final String SELECT_USERS_BY_COUNTRY = "SELECT id, name, email, country FROM users WHERE country LIKE ?;";
+    private static final String SELECT_USERS_SORT_BY_NAME = "SELECT id, name, email, country FROM users ORDER BY name ASC;";
 
     public UserDAO() {}
 
@@ -107,5 +109,44 @@ public class UserDAO implements IUserDAO {
             rowUpdated = statement.executeUpdate() > 0;
         }
         return rowUpdated;
+    }
+
+    @Override
+    public List<User> searchByCountry(String country) {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_BY_COUNTRY)) {
+            preparedStatement.setString(1, "%" + country + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String userCountry = rs.getString("country");
+                users.add(new User(id, name, email, userCountry));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> sortByName() {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_SORT_BY_NAME)) {
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String country = rs.getString("country");
+                users.add(new User(id, name, email, country));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }
