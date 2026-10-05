@@ -78,12 +78,29 @@ public class UserServlet extends HttpServlet {
                 case "test-use-tran":
                     testUseTran(request, response);
                     break;
+                case "test-user-tran-error":
+                    testUserTranError(request, response);
+                    break;
                 default:
                     listUser(request, response);
                     break;
             }
         } catch (Exception ex) {
             throw new ServletException(ex);
+        }
+    }
+
+    private void testUserTranError(HttpServletRequest request, HttpServletResponse response) {
+        User testUser = new User("User Rollback Test", "rollback@test.com", "VN");
+        try {
+            // Cố tình truyền permissionId = 99999 không tồn tại để kích hoạt lỗi Foreign Key và kiểm thử Rollback
+            userDAO.addUserTransaction(testUser, new int[]{99999});
+            response.setContentType("text/html;charset=UTF-8");
+            response.getWriter().println("<h3>Đã chạy thử nghiệm addUserTransaction với lỗi cố ý!</h3>");
+            response.getWriter().println("<p>Kiểm tra console: Ngoại lệ SQL đã được bắt và kích hoạt connection.rollback().</p>");
+            response.getWriter().println("<p><a href='" + request.getContextPath() + "/users'>Quay lại danh sách users</a></p>");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
