@@ -75,6 +75,9 @@ public class UserServlet extends HttpServlet {
                 case "test-without-tran":
                     testWithoutTran(request, response);
                     break;
+                case "test-use-tran":
+                    testUseTran(request, response);
+                    break;
                 default:
                     listUser(request, response);
                     break;
@@ -90,6 +93,18 @@ public class UserServlet extends HttpServlet {
         try {
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().println("<h3>Đã chạy xong hàm testWithoutTran. Hãy kiểm tra console và database!</h3>");
+            response.getWriter().println("<p><a href='" + request.getContextPath() + "/users'>Quay lại danh sách users</a></p>");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testUseTran(HttpServletRequest request, HttpServletResponse response) {
+        userDAO.insertUpdateUseTransaction();
+        System.out.println("Hoàn tất gọi hàm testUseTran!");
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.getWriter().println("<h3>Hoàn tất gọi hàm testUseTran! Hãy kiểm tra console và database.</h3>");
             response.getWriter().println("<p><a href='" + request.getContextPath() + "/users'>Quay lại danh sách users</a></p>");
         } catch (IOException e) {
             e.printStackTrace();
